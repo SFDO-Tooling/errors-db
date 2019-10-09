@@ -1,4 +1,4 @@
-web: daphne --bind 0.0.0.0 --port $PORT errors_db.asgi:application
+web: gunicorn errors_db.wsgi:application
 worker: python manage.py rqworker default short
 scheduler: python manage.py rqscheduler default short
 worker_default: python manage.py rqworker default
