@@ -1,0 +1,6 @@
+[run]
+omit =
+    errors_db/*/migrations/*
+
+[report]
+show_missing = True
