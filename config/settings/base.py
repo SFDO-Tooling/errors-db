@@ -84,7 +84,7 @@ PROJECT_ROOT = Path(__file__).absolute().parent.parent.parent
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = env("DJANGO_SECRET_KEY")
 HASHID_FIELD_SALT = env("DJANGO_HASHID_SALT")
-DB_ENCRYPTION_KEY = env("DB_ENCRYPTION_KEY")
+# DB_ENCRYPTION_KEY = env("DB_ENCRYPTION_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = env("DJANGO_DEBUG", default=False, type_=boolish)
@@ -114,7 +114,6 @@ INSTALLED_APPS = [
     "django.contrib.contenttypes",
     "django.contrib.sessions",
     "django.contrib.messages",
-    "channels",
     "whitenoise.runserver_nostatic",
     "django.contrib.staticfiles",
     "django_rq",
@@ -126,7 +125,7 @@ INSTALLED_APPS = [
     "rest_framework.authtoken",
     "parler",
     "errors_db",
-    "errors_db.multisalesforce",
+    # "errors_db.multisalesforce",
     "errors_db.api",
     "errors_db.adminapi.apps.AdminapiConfig",
     "django_js_reverse",
@@ -149,7 +148,7 @@ TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
         # This gets overridden in settings.production:
-        "DIRS": [str(PROJECT_ROOT / "dist"), str(PROJECT_ROOT / "templates")],
+        "DIRS": [str(PROJECT_ROOT / "templates")],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
@@ -281,9 +280,7 @@ SOCIALACCOUNT_PROVIDERS = {
 ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_UNIQUE_EMAIL = False
 ACCOUNT_EMAIL_VERIFICATION = "none"
-SOCIALACCOUNT_ADAPTER = (
-    "errors_db.multisalesforce.adapter.CustomSocialAccountAdapter"
-)
+# SOCIALACCOUNT_ADAPTER = "errors_db.multisalesforce.adapter.CustomSocialAccountAdapter"
 
 JS_REVERSE_JS_VAR_NAME = "api_urls"
 JS_REVERSE_EXCLUDE_NAMESPACES = ["admin", "admin_rest"]
@@ -315,12 +312,6 @@ RQ_QUEUES = {
     },
 }
 RQ = {"WORKER_CLASS": "errors_db.rq_worker.ConnectionClosingWorker"}
-CHANNEL_LAYERS = {
-    "default": {
-        "BACKEND": "channels_redis.core.RedisChannelLayer",
-        "CONFIG": {"hosts": [REDIS_LOCATION]},
-    }
-}
 
 # Rest Framework settings:
 REST_FRAMEWORK = {
@@ -395,7 +386,6 @@ LOGGING = {
             "propagate": False,
         },
         "rq.worker": {"handlers": ["rq_console"], "level": "DEBUG"},
-        "errors_db.multisalesforce": {"handlers": ["console"], "level": "DEBUG"},
         "errors_db.logging_middleware": {
             "handlers": ["console"],
             "level": "DEBUG",

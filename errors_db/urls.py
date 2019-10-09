@@ -20,7 +20,6 @@ from django.contrib import admin
 from django.urls import include, path, re_path
 from django.views.generic import RedirectView, TemplateView
 
-from .routing import websockets
 
 PREFIX = settings.ADMIN_AREA_PREFIX
 
@@ -48,4 +47,4 @@ urlpatterns = [
     # `reverse` in Python and `window.api_urls` in JavaScript. These will
     # usually only be the path component, not a full URL, and so the caller
     # will have to build them with the right scheme and authority sections.
-] + websockets.routes
+]
