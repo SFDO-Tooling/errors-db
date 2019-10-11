@@ -33,13 +33,5 @@ urlpatterns = [
     re_path(PREFIX + "$", RedirectView.as_view(url=f"/{PREFIX}/")),
     path(PREFIX + "/", admin.site.urls),
     path("accounts/", include("allauth.urls")),
-    path("api/", include("errors_db.api.urls")),
-    # Catchall for the rest. Right now, it just trusts that PREFIX ==
-    # 'admin', because we don't want to do string munging to get just
-    # the part without the regex and path cruft on it.
-    re_path(
-        r"^(?!{admin}|accounts|api|static)".format(admin=PREFIX),
-        TemplateView.as_view(template_name="index.html"),
-        name="frontend",
-    ),
+    path("", include("errors_db.api.urls")),
 ]
