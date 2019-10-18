@@ -9,5 +9,5 @@ from errors_db.api.views import ErrorInstanceViewSet
 # URL Configuration
 #
 router = DefaultRouter()
-router.register(r"error", ErrorInstanceViewSet, basename="error")
+router.register(r"error", ErrorInstanceViewSet)
 urlpatterns = router.urls
