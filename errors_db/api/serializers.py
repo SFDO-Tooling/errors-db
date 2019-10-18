@@ -18,8 +18,3 @@ class ErrorInstanceSerializer(serializers.ModelSerializer):
         model = ErrorInstance
         fields = "__all__"
 
-    def create(self, validated_data):
-        message = validated_data.pop("message") or []
-        error = self.Meta.model.objects.create(**validated_data)
-        error.message.create(**message)
-        return error
