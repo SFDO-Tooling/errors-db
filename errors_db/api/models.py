@@ -17,15 +17,35 @@ class User(mixins.HashIdMixin, AbstractUser):
     objects = UserManager()
 
 
-class ErrorMessage(models.Model):
-    message = models.TextField()
-
-
 class ErrorInstance(models.Model):
     context = JSONField()
     created = models.DateTimeField(auto_now_add=True)
-    message = models.ForeignKey(ErrorMessage, on_delete=models.CASCADE)
+    message = models.TextField()
+    stacktrace = models.TextField(blank=True, default="")
 
     class Meta:
         ordering = ["created"]
+
+
+class Situation(models.Model):
+    error_msg = models.TextField()
+    context = JSONField()
+    created = models.DateTimeField(auto_now_add=True)
+
+
+class Solution(models.Model):
+    UNKOWN = 0
+    RETRY = 1
+    CONTENT = 2
+    AUTOMATION = 3
+    SOLUTION_TYPES = [
+        (UNKOWN, "Unkown"),
+        (RETRY, "Retry"),
+        (CONTENT, "Content"),
+        (AUTOMATION, "Automation"),
+    ]
+    solution_type = models.PositiveIntegerField(choices=SOLUTION_TYPES, default=UNKOWN)
+    text = models.TextField()
+    situation = models.ForeignKey(Situation, null=True, on_delete=models.CASCADE)
+    created = models.DateTimeField(auto_now_add=True)
 
