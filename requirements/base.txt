@@ -14,7 +14,7 @@ django-rq==2.1.0
 Django==2.2.6
 djangorestframework==3.10.3
 logfmt==0.4
-newrelic==5.0.2.126
+newrelic==5.2.1.129
 Pillow==6.1.0
 psycopg2-binary==2.8.3
 pyopenssl==19.0.0
