@@ -42,5 +42,4 @@ class TestErrorInstanceViewSet:
             reverse("errorinstance-list"), data=error_data, format="json"
         )
 
-        expected_data = {"solutions": ["solution1", "solution2"]}
         assert response.status_code == 201

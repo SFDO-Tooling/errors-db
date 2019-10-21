@@ -1,6 +1,7 @@
 from .serializers import FullUserSerializer
 from errors_db.api.models import ErrorInstance, Solution
 from errors_db.api.serializers import ErrorInstanceSerializer
+from errors_db.api.search import ErrorSearch
 
 from django.contrib.auth import get_user_model
 from django.http import HttpResponse, JsonResponse
@@ -25,7 +26,7 @@ class UserView(generics.RetrieveAPIView):
         return self.get_queryset().get()
 
 
-class ErrorInstanceViewSet(viewsets.GenericViewSet, mixins.RetrieveModelMixin):
+class ErrorInstanceViewSet(viewsets.GenericViewSet):
     """
     ViewSet for creating ErrorInstances.
     """
@@ -35,16 +36,22 @@ class ErrorInstanceViewSet(viewsets.GenericViewSet, mixins.RetrieveModelMixin):
     serializer_class = ErrorInstanceSerializer
 
     def create(self, request):
-        error_msg = request.data["message"]
         context = request.data["context"]
+        error_msg = request.data["message"]
         stacktrace = request.data["stacktrace"]
 
         ErrorInstance.objects.create(
             message=error_msg, context=context, stacktrace=stacktrace
         )
 
-        solutions = Solution.objects.filter(situation__error_msg=error_msg)
-        data = {"solutions": "No solution found."}
-        if solutions.count():
-            data["solutions"] = [value for value in solutions.values()]
-        return Response(data, status=status.HTTP_201_CREATED)
+        solutions = ErrorSearch.get_solutions(error_msg, stacktrace, context)
+
+        return self._get_response(solutions)
+
+    def _get_response(self, solutions):
+        response_data = {}
+        if not solutions:
+            response_data["solutions"] = "No solutions found."
+        else:
+            response_data["solutions"] = [value for value in solutions.values()]
+        return Response(response_data, status=status.HTTP_201_CREATED)
