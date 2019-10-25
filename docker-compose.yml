@@ -1,0 +1,25 @@
+version: '3'
+
+services:
+  db:
+    image: postgres
+    restart: always
+    environment:
+      POSTGRES_DB: errors
+      POSTGRES_USER: mr_postgres
+      POSTGRES_PASSWORD: somepass
+  web:
+    build: .
+    command: python /code/manage.py makemigrations
+    command: python /code/manage.py migrate
+    command: python /code/manage.py runserver 0.0.0.0:8000
+    volumes:
+      - .:/code
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+    environment:
+      - DJANGO_SETTINGS_MODULE 
+      - DJANGO_SECRET_KEY
+      - DJANGO_HASHID_SALT
