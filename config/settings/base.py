@@ -209,7 +209,7 @@ DATBASES = {
         "CONN_MAX_AGE": 0,
     }
 }
-#
+
 # Custom User Model
 #
 AUTH_USER_MODEL = "api.User"
