@@ -5,14 +5,6 @@ from errors_db.api.models import ErrorInstance, Solution, Situation
 
 
 @pytest.mark.django_db
-def test_user_view(client):
-    response = client.get(reverse("user"))
-
-    assert response.status_code == 200
-    assert response.json()["username"].endswith("@example.com")
-
-
-@pytest.mark.django_db
 class TestErrorInstanceViewSet:
     @pytest.fixture
     def create_solution(self):
