@@ -10,4 +10,5 @@ ENV DATABASE_URL postgres://errors_db@db:5432/errors_db
 RUN mkdir /code
 WORKDIR /code
 COPY . /code/
+RUN pip install --upgrade pip
 RUN pip install -r requirements/local.txt
