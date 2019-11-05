@@ -113,6 +113,7 @@ ENV/
 # Database things
 *.sql
 *.dump
+/postgres
 
 # Node and Yarn packages:
 requirements/*.tar.gz
