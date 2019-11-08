@@ -1,5 +1,0 @@
-# see https://pyup.io/docs/configuration/ for all available options
-update: all
-schedule: every week
-branch_prefix: feature/pyup-
-label_prs: update
