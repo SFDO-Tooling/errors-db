@@ -12,6 +12,8 @@ RUN pip install --no-cache -r requirements/local.txt
 COPY . /app/
 WORKDIR /app
 
+RUN python manage.py collectstatic --noinput
+
 ENV DATABASE_URL postgres://errors_db@db:5432/errors_db
 ENV DJANGO_HASHID_SALT 'sample hashid salt'
 ENV DJANGO_SECRET_KEY 'sample secret key'

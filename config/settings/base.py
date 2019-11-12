@@ -272,11 +272,7 @@ USE_TZ = True
 
 # https://docs.djangoproject.com/en/1.11/howto/static-files/
 # This gets overridden in settings.production:
-STATICFILES_DIRS = [
-    str(PROJECT_ROOT / "static"),
-    str(PROJECT_ROOT / "dist"),
-    str(PROJECT_ROOT / "locales"),
-]
+STATICFILES_DIRS = []
 STATIC_URL = "/static/"
 STATIC_ROOT = str(PROJECT_ROOT / "staticfiles")
 
