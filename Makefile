@@ -24,9 +24,6 @@ clean-test: ## remove test and coverage artifacts
 test:
 	pytest
 
-test-all:
-	tox
-
 coverage: # check code coverage quickly with the default Python
 	coverage run --source cumulusci -m pytest
 	coverage report -m

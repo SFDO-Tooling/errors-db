@@ -51,7 +51,7 @@ class ErrorInstanceViewSet(viewsets.GenericViewSet):
     def _get_response(self, solutions):
         response_data = {}
         if not solutions:
-            response_data["solutions"] = "No solutions found."
+            response_data["solutions"] = []
         else:
             response_data["solutions"] = [value for value in solutions.values()]
         return Response(response_data, status=status.HTTP_201_CREATED)

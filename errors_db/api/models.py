@@ -4,8 +4,6 @@ from django.contrib.auth.models import AbstractUser
 from django.contrib.auth.models import UserManager as BaseUserManager
 from model_utils import Choices
 
-from enum import Enum
-
 from . import model_mixins as mixins
 
 
