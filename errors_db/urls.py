@@ -18,8 +18,7 @@ from urllib.parse import urljoin
 from django.conf import settings
 from django.contrib import admin
 from django.urls import include, path, re_path
-from django.views.generic import RedirectView, TemplateView
-
+from django.views.generic import RedirectView
 
 PREFIX = settings.ADMIN_AREA_PREFIX
 
@@ -33,18 +32,6 @@ urlpatterns = [
     # Put this after all other things using `PREFIX`:
     re_path(PREFIX + "$", RedirectView.as_view(url=f"/{PREFIX}/")),
     path(PREFIX + "/", admin.site.urls),
-    path("accounts/", include("allauth.urls")),
-    path("api/", include("errors_db.api.urls")),
-    # Catchall for the rest. Right now, it just trusts that PREFIX ==
-    # 'admin', because we don't want to do string munging to get just
-    # the part without the regex and path cruft on it.
-    re_path(
-        r"^(?!{admin}|accounts|api|static)".format(admin=PREFIX),
-        TemplateView.as_view(template_name="index.html"),
-        name="frontend",
-    ),
-    # Add WebSocket routes so that non-HTTP paths can be accessible by
-    # `reverse` in Python and `window.api_urls` in JavaScript. These will
-    # usually only be the path component, not a full URL, and so the caller
-    # will have to build them with the right scheme and authority sections.
+    # path("accounts/", include("allauth.urls")),
+    path("", include("errors_db.api.urls")),
 ]

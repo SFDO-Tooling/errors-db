@@ -78,6 +78,10 @@ def env(name, default=NoDefaultValue, type_=str):
 PROJECT_ROOT = Path(__file__).absolute().parent.parent.parent
 
 
+#
+# Security
+#
+
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.11/howto/deployment/checklist/
 
@@ -104,33 +108,43 @@ ALLOWED_HOSTS = [
     if el.strip()
 ]
 
-
-# Application definition
-
-INSTALLED_APPS = [
+#
+#  Application Definition
+#
+DJANGO_APPS = [
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.sites",
     "django.contrib.contenttypes",
     "django.contrib.sessions",
     "django.contrib.messages",
-    "whitenoise.runserver_nostatic",
     "django.contrib.staticfiles",
-    "django_rq",
-    "scheduler",
-    "allauth",
-    "allauth.account",
-    "allauth.socialaccount",
-    "rest_framework",
-    "rest_framework.authtoken",
-    "parler",
-    "errors_db",
-    # "errors_db.multisalesforce",
-    "errors_db.api",
-    "errors_db.adminapi.apps.AdminapiConfig",
-    "django_js_reverse",
 ]
 
+THIRD_PARTY_APPS = [
+    # "allauth",
+    # "allauth.account",
+    # "allauth.socialaccount",
+    "django_rq",
+    "parler",
+    "rest_framework",
+    "rest_framework.authtoken",
+    "scheduler",
+    "whitenoise.runserver_nostatic",
+]
+
+LOCAL_APPS = [
+    "errors_db",
+    "errors_db.api",
+    # "errors_db.multisalesforce",
+    "errors_db.adminapi.apps.AdminapiConfig",
+]
+
+INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
+
+#
+# Middleware Configuration
+#
 MIDDLEWARE = [
     "errors_db.logging_middleware.LoggingMiddleware",
     "sfdo_template_helpers.admin.middleware.AdminRestrictMiddleware",
@@ -143,6 +157,11 @@ MIDDLEWARE = [
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
+
+
+#
+# Templates
+#
 
 TEMPLATES = [
     {
@@ -167,36 +186,41 @@ TEMPLATES = [
 
 AUTHENTICATION_BACKENDS = [
     "django.contrib.auth.backends.ModelBackend",
-    "allauth.account.auth_backends.AuthenticationBackend",
+    # "allauth.account.auth_backends.AuthenticationBackend",
 ]
-
 ASGI_APPLICATION = "errors_db.routing.application"
-
+PARLER_LANGUAGES = {1: ({"code": "en-us"},), "default": {"fallback": "en-us"}}
 SITE_ID = 1
 
-PARLER_LANGUAGES = {1: ({"code": "en-us"},), "default": {"fallback": "en-us"}}
-
+#
 # Database
-# https://docs.djangoproject.com/en/1.11/ref/settings/#databases
+#
 
+# https://docs.djangoproject.com/en/1.11/ref/settings/#databases
 DATABASES = {"default": dj_database_url.config(default="postgres:///errors_db")}
 
-# Custom User model:
+#
+# Custom User Model
+#
 AUTH_USER_MODEL = "api.User"
 
 
-# URL configuration:
+#
+# URL Configuration
+#
 ROOT_URLCONF = "errors_db.urls"
-
 ADMIN_AREA_PREFIX = env("DJANGO_ADMIN_URL", default="admin")
-
 ADMIN_API_ALLOWED_SUBNETS = env(
-    "ADMIN_API_ALLOWED_SUBNETS", default="127.0.0.1/32", type_=ipv4_networks
+    "ADMIN_API_ALLOWED_SUBNETS",
+    default="127.0.0.1/32,172.16.0.0/12",
+    type_=ipv4_networks,
 )
 
+#
 # Password validation
-# https://docs.djangoproject.com/en/1.11/ref/settings/#auth-password-validators
+#
 
+# https://docs.djangoproject.com/en/1.11/ref/settings/#auth-password-validators
 AUTH_PASSWORD_VALIDATORS = [
     {
         "NAME": (
@@ -233,29 +257,24 @@ SECURE_HSTS_INCLUDE_SUBDOMAINS = env(
 SECURE_HSTS_PRELOAD = env("SECURE_HSTS_PRELOAD", default=False, type_=boolish)
 
 
+#
 # Internationalization
+#
+
 # https://docs.djangoproject.com/en/1.11/topics/i18n/
-
 LANGUAGE_CODE = "en-us"
-
 TIME_ZONE = "UTC"
-
 USE_I18N = True
-
 USE_L10N = True
-
 USE_TZ = True
 
-
+#
 # Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/1.11/howto/static-files/
+#
 
+# https://docs.djangoproject.com/en/1.11/howto/static-files/
 # This gets overridden in settings.production:
-STATICFILES_DIRS = [
-    str(PROJECT_ROOT / "static"),
-    str(PROJECT_ROOT / "dist"),
-    str(PROJECT_ROOT / "locales"),
-]
+STATICFILES_DIRS = []
 STATIC_URL = "/static/"
 STATIC_ROOT = str(PROJECT_ROOT / "staticfiles")
 
@@ -285,9 +304,9 @@ ACCOUNT_EMAIL_VERIFICATION = "none"
 JS_REVERSE_JS_VAR_NAME = "api_urls"
 JS_REVERSE_EXCLUDE_NAMESPACES = ["admin", "admin_rest"]
 
-
-# Redis configuration:
-
+#
+# Redis Configuration
+#
 REDIS_LOCATION = "{0}/{1}".format(env("REDIS_URL", default="redis://localhost:6379"), 0)
 CACHES = {
     "default": {
@@ -313,7 +332,9 @@ RQ_QUEUES = {
 }
 RQ = {"WORKER_CLASS": "errors_db.rq_worker.ConnectionClosingWorker"}
 
-# Rest Framework settings:
+#
+# Rest Framework Settings
+#
 REST_FRAMEWORK = {
     "DEFAULT_PERMISSION_CLASSES": (
         "rest_framework.permissions.IsAuthenticatedOrReadOnly",
@@ -324,9 +345,9 @@ REST_FRAMEWORK = {
     ),
 }
 
-
+#
 # Logging
-
+#
 LOG_REQUESTS = True
 LOG_REQUEST_ID_HEADER = "HTTP_X_REQUEST_ID"
 GENERATE_REQUEST_ID_IF_NOT_IN_HEADER = True
@@ -394,7 +415,9 @@ LOGGING = {
     },
 }
 
+#
 # Sentry
+#
 SENTRY_DSN = env("SENTRY_DSN", default="")
 
 if SENTRY_DSN:

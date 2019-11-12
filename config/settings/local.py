@@ -8,3 +8,9 @@ LOGGING["loggers"]["werkzeug"] = {
     "level": "DEBUG",
     "propagate": True,
 }
+
+# Don't use HTTPS
+SECURE_SSL_REDIRECT = False
+SESSION_COOKIE_SECURE = False
+CSRF_COOKIE_SECURE = False
+SECURE_HSTS_SECONDS = 0

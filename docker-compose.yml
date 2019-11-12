@@ -1,0 +1,23 @@
+version: '3'
+
+services:
+  db:
+    image: postgres
+    environment:
+      POSTGRES_USER: errors_db
+    volumes:
+      - ./postgres:/var/lib/postgresql/data:delegated
+  web:
+    build: .
+    command: |
+      bash -c 'while !</dev/tcp/db/5432; do sleep 1; done;
+      sleep 1
+      python /app/manage.py migrate && python /app/manage.py runserver 0.0.0.0:8000'
+    volumes:
+      - .:/app
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+    environment:
+      DJANGO_SETTINGS_MODULE: config.settings.local

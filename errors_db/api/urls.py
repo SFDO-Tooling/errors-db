@@ -1,7 +1,13 @@
 from django.urls import path
-from rest_framework import routers
+from rest_framework.routers import DefaultRouter
 
 from .views import UserView
+from errors_db.api.views import ErrorInstanceViewSet
 
-router = routers.DefaultRouter()
-urlpatterns = router.urls + [path("user/", UserView.as_view(), name="user")]
+
+#
+# URL Configuration
+#
+router = DefaultRouter()
+router.register(r"error", ErrorInstanceViewSet)
+urlpatterns = router.urls
