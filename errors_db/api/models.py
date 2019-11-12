@@ -32,7 +32,7 @@ class Situation(models.Model):
 
 
 class Solution(models.Model):
-    UNKOWN = 0
+    UNKNOWN = 0
     RETRY = 1
     CONTENT = 2
     AUTOMATION = 3
@@ -42,8 +42,7 @@ class Solution(models.Model):
         (CONTENT, "Content"),
         (AUTOMATION, "Automation"),
     ]
-    solution_type = models.PositiveIntegerField(choices=SOLUTION_TYPES, default=UNKOWN)
+    solution_type = models.PositiveIntegerField(choices=SOLUTION_TYPES, default=UNKNOWN)
     text = models.TextField()
     situation = models.ForeignKey(Situation, null=True, on_delete=models.CASCADE)
     created = models.DateTimeField(auto_now_add=True)
-

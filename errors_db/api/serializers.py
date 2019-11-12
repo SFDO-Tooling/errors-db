@@ -17,4 +17,3 @@ class ErrorInstanceSerializer(serializers.ModelSerializer):
     class Meta:
         model = ErrorInstance
         fields = "__all__"
-

@@ -211,7 +211,9 @@ AUTH_USER_MODEL = "api.User"
 ROOT_URLCONF = "errors_db.urls"
 ADMIN_AREA_PREFIX = env("DJANGO_ADMIN_URL", default="admin")
 ADMIN_API_ALLOWED_SUBNETS = env(
-    "ADMIN_API_ALLOWED_SUBNETS", default="127.0.0.1/32", type_=ipv4_networks
+    "ADMIN_API_ALLOWED_SUBNETS",
+    default="127.0.0.1/32,172.16.0.0/12",
+    type_=ipv4_networks,
 )
 
 #

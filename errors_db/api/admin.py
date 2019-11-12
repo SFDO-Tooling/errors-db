@@ -26,4 +26,3 @@ class SituationAdmin(admin.ModelAdmin):
 class SolutionAdmin(admin.ModelAdmin):
     list_display = ("solution_type", "text", "situation", "created")
     list_filter = ["created"]
-
