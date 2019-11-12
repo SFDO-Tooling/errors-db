@@ -39,7 +39,7 @@ class Solution(models.Model):
     CONTENT = 2
     AUTOMATION = 3
     SOLUTION_TYPES = [
-        (UNKOWN, "Unkown"),
+        (UNKNOWN, "Unknown"),
         (RETRY, "Retry"),
         (CONTENT, "Content"),
         (AUTOMATION, "Automation"),
