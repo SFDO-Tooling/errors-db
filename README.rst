@@ -1,6 +1,8 @@
 errors-db
 =========
 
+[![Coverage Status](https://coveralls.io/repos/github/SFDO-Tooling/errors-db/badge.svg?branch=master)](https://coveralls.io/github/SFDO-Tooling/errors-db?branch=master)
+
 Development
 -----------
 
