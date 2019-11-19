@@ -108,19 +108,9 @@ workflows:
   build-and-test:
     jobs:
       - build
-      - lint:
-          requires:
-            - build
-      - test-client:
-          requires:
-            - build
       - test-python:
-          requires:
-            - build
-      - build-docs:
           requires:
             - build
       - check-test-coverage:
           requires:
-            - test-client
             - test-python
