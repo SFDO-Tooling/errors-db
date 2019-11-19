@@ -101,7 +101,7 @@ jobs:
           name: Check Test Coverage
           command: |
             . venv/bin/activate
-            coverage3 report --fail-under=100
+            coverage3 report --fail-under=90
 
 workflows:
   version: 2
