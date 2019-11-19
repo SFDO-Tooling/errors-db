@@ -9,89 +9,20 @@ jobs:
       - restore_cache:
           keys:
             - errors_db-py-{{ checksum "requirements/base.txt" }}-{{ checksum "requirements/test.txt" }}-{{ checksum "requirements/local.txt" }}
-      - restore_cache:
-          keys:
-            - errors_db-npm-{{ checksum "yarn.lock" }}
-      - run:
-          name: Install Node & Yarn
-          command: ./bin/unpack-node
-      - run:
-          name: Set $PATH
-          command: |
-            echo 'export PATH=~/errors_db/node_modules/.bin:$PATH' >> $BASH_ENV
-            echo 'export PATH=~/errors_db/node/bin:$PATH' >> $BASH_ENV
-            source $BASH_ENV
       - run:
           name: Install Dependencies
           command: |
-            yarn install --frozen-lockfile
             python3 -m venv venv
             . venv/bin/activate
             pip install -Ur requirements/local.txt
-      - run:
-          name: Compile Front-End Assets
-          command: yarn prod
       - persist_to_workspace:
           root: .
           paths:
             - ./venv
-            - ./node_modules
-            - ./node
       - save_cache:
           key: errors_db-py-{{ checksum "requirements/base.txt" }}-{{ checksum "requirements/test.txt" }}-{{ checksum "requirements/local.txt" }}
           paths:
             - ./venv
-      - save_cache:
-          key: errors_db-npm-{{ checksum "yarn.lock" }}
-          paths:
-            - ./node_modules
-
-  lint:
-    working_directory: ~/errors_db
-    docker:
-      - image: circleci/python:3.7.3
-    steps:
-      - checkout
-      - attach_workspace:
-          at: .
-      - run:
-          name: Set $PATH
-          command: |
-            echo 'export PATH=~/errors_db/node_modules/.bin:$PATH' >> $BASH_ENV
-            echo 'export PATH=~/errors_db/node/bin:$PATH' >> $BASH_ENV
-            source $BASH_ENV
-      - run:
-          name: Lint
-          command: |
-            . venv/bin/activate
-            yarn lint
-
-  test-client:
-    working_directory: ~/errors_db
-    docker:
-      - image: circleci/python:3.7.3
-    steps:
-      - checkout
-      - attach_workspace:
-          at: .
-      - run:
-          name: Set $PATH
-          command: |
-            echo 'export PATH=~/errors_db/node_modules/.bin:$PATH' >> $BASH_ENV
-            echo 'export PATH=~/errors_db/node/bin:$PATH' >> $BASH_ENV
-            source $BASH_ENV
-      - run:
-          name: Test JS
-          command: yarn test:coverage
-      - store_artifacts:
-          path: coverage
-          destination: js-reports
-      - store_test_results:
-          path: coverage
-      - persist_to_workspace:
-          root: .
-          paths:
-            - coverage
 
   test-python:
     working_directory: ~/errors_db
@@ -157,43 +88,20 @@ jobs:
       - attach_workspace:
           at: .
       - run:
-          name: Set $PATH
-          command: |
-            echo 'export PATH=~/errors_db/node_modules/.bin:$PATH' >> $BASH_ENV
-            echo 'export PATH=~/errors_db/node/bin:$PATH' >> $BASH_ENV
-            source $BASH_ENV
-      - run:
           name: Report Test Coverage
           command: |
             . venv/bin/activate
             if [[ -z "${COVERALLS_REPO_TOKEN}" ]]; then
               echo ">> env var COVERALLS_REPO_TOKEN is not set; skipping test coverage reporting"
             else
-              yarn pytest:report-coverage
-              yarn test:report-coverage
+              $VIRTUAL_ENV/bin/coveralls 
               curl -k "https://coveralls.io/webhook?repo_token=${COVERALLS_REPO_TOKEN}" -d "payload[build_num]=${CIRCLE_BUILD_NUM}&payload[status]=done"
             fi
       - run:
           name: Check Test Coverage
           command: |
             . venv/bin/activate
-            yarn pytest:check-coverage
-            yarn test:check-coverage
-
-  build-docs:
-    working_directory: ~/errors_db
-    docker:
-      - image: circleci/python:3.7.3
-    steps:
-      - checkout
-      - attach_workspace:
-          at: .
-      - run:
-          name: Build Documentation
-          command: |
-            . venv/bin/activate
-            cd docs
-            make html
+            coverage3 report --fail-under=100
 
 workflows:
   version: 2
