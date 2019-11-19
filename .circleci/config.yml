@@ -3,7 +3,7 @@ jobs:
   build:
     working_directory: ~/errors_db
     docker:
-      - image: circleci/python:3.7.3
+      - image: circleci/python:3.8.0
     steps:
       - checkout
       - restore_cache:
@@ -27,7 +27,7 @@ jobs:
   test-python:
     working_directory: ~/errors_db
     docker:
-      - image: circleci/python:3.7.3
+      - image: circleci/python:3.8.0
         environment:
           BUCKETEER_AWS_ACCESS_KEY_ID: circle_test
           BUCKETEER_AWS_SECRET_ACCESS_KEY: circle_test
@@ -80,7 +80,7 @@ jobs:
   check-test-coverage:
     working_directory: ~/errors_db
     docker:
-      - image: circleci/python:3.7.3
+      - image: circleci/python:3.8.0
     environment:
       COVERALLS_PARALLEL: true
     steps:
