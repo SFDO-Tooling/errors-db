@@ -9,5 +9,3 @@ release:
   image: web
   command:
   - ./manage.py migrate
-run:
-  web: ./manage.py runserver 0.0.0.0:8000
