@@ -1,4 +1,6 @@
 setup:
+  config:
+    SECRET_KEY: very_secret
   addons:
   - plan: heroku-postgresql
     as: DATABASE
