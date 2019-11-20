@@ -1,3 +1,14 @@
+setup:
+  addons:
+  - plan: heroku-postgresql
+    as: DATABASE
 build:
   docker:
     web: Dockerfile
+release:
+  image: web
+  command:
+  - ./manage.py makemigrations
+  - ./manage.py migrate
+run:
+  web: ./manage.py runserver 0.0.0.0:8000
