@@ -19,3 +19,4 @@ ENV DJANGO_SETTINGS_MODULE config.settings.production
 
 RUN python manage.py collectstatic --noinput
 
+CMD python ./manage.py runserver 0.0.0.0:8000
