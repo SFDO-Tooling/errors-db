@@ -1,7 +1,5 @@
 FROM python:3.7-slim
 
-ARG BUILD_ENV=development
-
 #
 # Env Setup
 #
