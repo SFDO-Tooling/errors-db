@@ -7,7 +7,9 @@ ENV PYTHONDONTWRITEBYTECODE 1
 RUN pip install --no-cache --upgrade pip
 
 COPY ./requirements /requirements
-RUN pip install --no-cache -r requirements/local.txt
+RUN if [ "${BUILD_ENV}" = "production" ]; then pip install --no-cache -r requirements/production.txt; fi 
+RUN if [ "${BUILD_ENV}" = "development" ]; then pip install --no-cache -r requirements/local.txt; fi
+
 
 COPY . /app/
 WORKDIR /app
