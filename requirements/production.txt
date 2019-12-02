@@ -3,3 +3,4 @@
 
 -r base.txt
 honcho==1.0.1
+gunicorn==20.0.4
