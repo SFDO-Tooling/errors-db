@@ -197,7 +197,11 @@ SITE_ID = 1
 #
 
 # https://docs.djangoproject.com/en/1.11/ref/settings/#databases
-DATABASES = {"default": dj_database_url.config(default="postgres:///errors_db")}
+DATABASES = {
+    "default": dj_database_url.config(
+        default="postgres://mr_postgres:somepass@db:5432/errors"
+    )
+}
 
 #
 # Custom User Model
