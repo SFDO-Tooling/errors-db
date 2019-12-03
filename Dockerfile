@@ -25,4 +25,4 @@ WORKDIR /app
 RUN python manage.py collectstatic --noinput
 
 # CMD python ./manage.py runserver 0.0.0.0:8000
-CMD gunicorn errors_db.config.wsgi:application
+CMD gunicorn config.wsgi:application
