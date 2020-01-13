@@ -11,7 +11,7 @@ pytest-factoryboy==2.0.3
 pytest-mock==2.0.0
 
 coveralls==1.10.0
-coverage==5.0.1
+coverage==5.0.2
 factory_boy==2.12.0
 freezegun==0.3.12
 
