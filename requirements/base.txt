@@ -4,7 +4,7 @@ channels==2.4.0
 dj-database-url==0.5.0
 django-hashid-field==3.1.1
 django-js-reverse==0.9.1
-django-log-request-id==1.4.0
+django-log-request-id==1.4.1
 django-model-utils==4.0.0
 django-parler==2.0.1
 django-redis==4.11.0
@@ -17,7 +17,7 @@ newrelic==5.4.1.134
 Pillow==7.0.0
 psycopg2-binary==2.8.4
 pyopenssl==19.1.0
-sentry-sdk==0.13.5
+sentry-sdk==0.14.0
 service_identity==18.1.0
 werkzeug==0.16.0
 whitenoise==5.0.1
